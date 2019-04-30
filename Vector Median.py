@@ -21,7 +21,9 @@ def load_mnist(path, kind='train'):
 
 X_train, y_train = load_mnist('data/', kind='train')
 
+
 def median(lst): 
+    """" Ham tinh median """
     sortedLst = sorted(lst) 
     lstLen = len(lst) 
     index = (lstLen - 1) // 2 
@@ -32,26 +34,46 @@ def median(lst):
      return (sortedLst[index] + sortedLst[index + 1])/2.0 
     
 def transarr(arr):
-    arr = arr.reshape(-1)
+    """" Ham vecto hoa """
+    newarr = arr.reshape(-1)
+    return newarr
 
-def separate(arr):
-    temp = np.array()
-    newarr = []
-    for i in range(0, 4):
-        for j in range(0, 4):
-            temp = arr[i*7 : (i+1)*7 -1 , j*7 : (j+1)*7 -1]
-            transarr(temp)
-            newarr[i][j] = median(temp)
+for q in range(0,60000):
+    for w in range(0,7):
+        w*=4
+        for e in range(0,7):
+            e*=4
+            tran = transarr(X_train[q][w][e])
+            X_train[q][w][e] = median(tran)
 
-print('Rows: %d, columns: %d' % (B.shape[0], B.shape[1]))
+for q in range(0,60000):
+    for w in range(0,7):
+        for e in range(0,7):
+            X_train[q][w][e]=X_train[q][w*4][e*4]
+
+A=[]
+for i in range(0,60000):
+    A.append([])
+    for j in range(0,7):
+        A[i].append([])
+        for k in range(0,7):
+            A[i][j].insert(k,X_train[i][j][k])
+            
+B=np.array(A)
+
+
+
+print('Rows: %d, columns: %d' %(X_train.shape[0], X_train.shape[1]))
 
 fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True,)
 ax = ax.flatten()
 for i in range(10):
-    img = B[y_train == i][0]
+    img = X_train[y_train == i][0]
     ax[i].imshow(img, cmap='Greys', interpolation='nearest')
 
 ax[0].set_xticks([])
 ax[0].set_yticks([])
 plt.tight_layout()
 plt.show()
+B=B.reshape(60000,-1)
+
