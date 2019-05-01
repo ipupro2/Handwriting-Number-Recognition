@@ -44,13 +44,14 @@ for q in range(0,60000):
         for e in range(0,7):
             e*=4
             for r in range(w,w+4):
-                    u = median(transarr(X_train[q][r]))
+                for t in range(e,e+4):
+                    u = median(transarr(X_train[q][r][t]))
             X_train[q][w][e]=median(transarr(u))
 
 for q in range(0,60000):
     for w in range(0,7):
         for e in range(0,7):
-            X_train[q][w][e]=X_train[q][w*2][e*2]      
+            X_train[q][w][e]=X_train[q][w*4][e*4]      
 
 A=[]
 for i in range(0,60000):
