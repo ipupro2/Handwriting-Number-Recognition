@@ -38,19 +38,22 @@ def transarr(arr):
     return newarr
 
 
-for q in range(0,10000):
+for q in range(0,60000):
     for w in range(0,7):
         w*=4
         for e in range(0,7):
             e*=4
             for r in range(w,w+4):
-                for t in range(e,e+4):
-                    u = median(transarr(X_train[q][r][t]))
+                    u = median(transarr(X_train[q][r]))
             X_train[q][w][e]=median(transarr(u))
-           
+
+for q in range(0,60000):
+    for w in range(0,7):
+        for e in range(0,7):
+            X_train[q][w][e]=X_train[q][w*2][e*2]      
 
 A=[]
-for i in range(0,10000):
+for i in range(0,60000):
     A.append([])
     for j in range(0,7):
         A[i].append([])
@@ -59,17 +62,17 @@ for i in range(0,10000):
             
 B=np.array(A)
 
-print('Rows: %d, columns: %d' %(X_train.shape[0], X_train.shape[1]))
+print('Rows: %d, columns: %d' % (B.shape[0], B.shape[1]))
 
 fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True,)
 ax = ax.flatten()
 for i in range(10):
-    img = X_train[y_train == i][0]
+    img = B[y_train == i][0]
     ax[i].imshow(img, cmap='Greys', interpolation='nearest')
 
 ax[0].set_xticks([])
 ax[0].set_yticks([])
 plt.tight_layout()
 plt.show()
-B=B.reshape(10000,-1)
+B=B.reshape(60000,-1)
 
