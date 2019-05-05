@@ -1,0 +1,45 @@
+import os
+import numpy as np
+import gzip
+from sklearn import neighbors
+from sklearn.metrics import accuracy_score
+
+def load_mnist(path, kind='train'):
+    """Load MNIST data from `path`"""
+    labels_path = os.path.join(path, '%s-labels-idx1-ubyte.gz' % kind)
+    images_path = os.path.join(path, '%s-images-idx3-ubyte.gz' % kind)
+        
+    with gzip.open(labels_path, 'rb') as lbpath:
+        lbpath.read(8)
+        buffer = lbpath.read()
+        labels = np.frombuffer(buffer, dtype=np.uint8)
+    with gzip.open(images_path, 'rb') as imgpath:
+        imgpath.read(16)
+        buffer = imgpath.read()
+        images = np.frombuffer(buffer, dtype=np.uint8).reshape(len(labels), 28, 28).astype(np.float64)
+    return images, labels
+
+
+X_train, y_train = load_mnist('data/', kind='train')
+X_test, y_test=load_mnist('data/', kind='t10k')
+print('Rows: %d, columns: %d' %(X_train.shape[0], X_train.shape[1]))
+print('Rows: %d, columns: %d' %(X_test.shape[0], X_test.shape[1]))
+
+
+"""ham vector hoa tap X_train"""
+def vectorize(np):
+    A=np.reshape(len(np),-1)
+    return A
+
+x_train=vectorize(X_train)
+x_test=vectorize(X_test)
+
+clf = neighbors.KNeighborsClassifier(n_neighbors = 1, weights = 'distance', algorithm = 'brute', p = 2)
+clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+print("20 nhan dau tien cua tap du doan")
+print(y_pred[0:19])
+print("20 nhan dau tien cua tap y_test")
+print(y_test[0:19])
+print ("Accuracy of 1NN for MNIST: %.2f" %(100*accuracy_score(y_test, y_pred)), end='%')
