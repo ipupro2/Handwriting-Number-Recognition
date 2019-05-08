@@ -3,8 +3,9 @@ import os
 import numpy as np
 import gzip
 import Vectorize as v
-import time
-from sklearn.neighbors import KNeighborsClassifier
+import AverageClassifier
+import KNNClassifier
+import ANNClassifier
 
 def load_mnist(path, kind='train'):
     """Load MNIST data from `path`"""
@@ -20,11 +21,9 @@ def load_mnist(path, kind='train'):
         buffer = imgpath.read()
         images = np.frombuffer(buffer, dtype=np.uint8).reshape(len(labels), 28, 28).astype(np.float64)
     return images, labels
-
 X_train, y_train = load_mnist('data/', kind='train')
 X_test, y_test = load_mnist('data/', kind='t10k')
 print('Rows: %d, columns: %d' % (X_train.shape[0], X_train.shape[1]))
-neigh = KNeighborsClassifier(n_neighbors=3)
 X_train = v.MeanVectorize14(X_train)
 X_test = v.MeanVectorize14(X_test)
 fig, ax = plt.subplots(nrows=2, ncols=5, sharex=True, sharey=True,)
@@ -36,14 +35,23 @@ ax[0].set_xticks([])
 ax[0].set_yticks([])
 plt.tight_layout()
 plt.show()
-now = time.time()
 X_train = v.NormalVectorize(X_train)
 X_test = v.NormalVectorize(X_test)
-print(X_train[0])
-#print("Training...")
-#time.sleep(0.2)
-#neigh.fit(X_train, y_train)
-#print("Testing...")
-#time.sleep(0.2)
-#print(neigh.score(X_test, y_test))
-#print("Training and testing time: %.2f"%(time.time()-now))
+
+"""Average Classifier"""
+AC = AverageClassifier.Train(X_train, y_train)
+print("Average Classifier Accurary:", AverageClassifier.Test(X_test,y_test,AC)*100, "%")
+
+"""KNN Classifier"""
+print("KNN Predict Classifier:")
+print("KNN")
+KNNClassifier.Test(X_test, y_test, X_train, y_train)
+print("KNN with Lib")
+KNN = KNNClassifier.KNNbyLib(X_train, y_train)
+KNNClassifier.KNNByLibTest(X_test, y_test, KNN)
+
+
+"""ANN Classifier"""
+ANN = ANNClassifier.Train(X_train, y_train)
+print("ANN Classifier Accurary:")
+ANNClassifier.Test(X_test, y_test, ANN)
