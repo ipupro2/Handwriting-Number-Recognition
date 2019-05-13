@@ -116,4 +116,39 @@ def median(lst):
 def transarr(arr):
     """" Ham vecto hoa """
     return arr.reshape(-1)
+
+def MinVectorize7(X_train):
+    A = []
+    for q in range(0,len(X_train)):
+        ARR = []
+        for w in range(0,X_train.shape[1],4):
+            Arr = []
+            for e in range(0,X_train.shape[2],4):
+                min = X_train[q][w][e]
+                for r in range(w,w+4):
+                    for t in range(e,e+4):
+                        if min > X_train[q][r][t]:
+                            min = X_train[q][r][t]
+                Arr.append(min)
+            ARR.append(Arr)    
+        A.append(ARR)    
+    return np.array(A)
+
+def MinVectorize14(X_train):
+    A = []
+    for q in range(0,len(X_train)):
+        ARR = []
+        for w in range(0,X_train.shape[1],2):
+            Arr = []
+            for e in range(0,X_train.shape[2],2):
+                min = X_train[q][w][e]
+                for r in range(w,w+2):
+                    for t in range(e,e+2):
+                        if min > X_train[q][r][t]:
+                            min = X_train[q][r][t]
+                Arr.append(min)
+            ARR.append(Arr)    
+        A.append(ARR)    
+    return np.array(A)
+
     
