@@ -6,7 +6,7 @@ def NormalVectorize(A):
 def MeanVectorize14(X_train):
     A = []
     u=0
-    for q in range(0,60000):
+    for q in range(0,len(X_train)):
         ARR = []
         for w in range(0,28,2):
             Arr = []
@@ -23,7 +23,7 @@ def MeanVectorize14(X_train):
 def MeanVectorize7(X_train):
     A = []
     u=0
-    for q in range(0,60000):
+    for q in range(0,len(X_train)):
         ARR = []
         for w in range(0,28,4):
             Arr = []
@@ -39,7 +39,7 @@ def MeanVectorize7(X_train):
 
 def MaxVectorize14(X_train):
     A = []
-    for q in range(0,60000):
+    for q in range(0,len(X_train)):
         ARR = []
         for w in range(0,28,2):
             Arr = []
@@ -56,7 +56,7 @@ def MaxVectorize14(X_train):
 
 def MaxVectorize7(X_train):
     A = []
-    for q in range(0,60000):
+    for q in range(0,len(X_train)):
         ARR = []
         for w in range(0,28,4):
             Arr = []
@@ -75,7 +75,7 @@ def MaxVectorize7(X_train):
 def MedianVectorize14(X_train):
     
     A = []
-    for q in range(0,60000):
+    for q in range(0,len(X_train)):
         ARR = []
         for w in range(0,28,2):
             Arr = []
@@ -90,7 +90,7 @@ def MedianVectorize14(X_train):
 
 def MedianVectorize7(X_train):   
     A = []
-    for q in range(0,60000):
+    for q in range(0,len(X_train)):
         ARR = []
         for w in range(0,28,4):
             Arr = []
