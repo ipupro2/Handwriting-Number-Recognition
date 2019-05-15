@@ -49,7 +49,7 @@ def MedianVectorize(X_train, width):
                 for r in range(w,w+28//width):
                     for t in range(e,e+28//width):
                         u.append(X_train[q][r][t])
-                Arr.append(u)
+                Arr.append(median(u))
             ARR.append(Arr)    
         A.append(ARR)  
     return np.array(A)
