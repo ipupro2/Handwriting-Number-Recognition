@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import gzip
-import NEWvectorize as v
+import Vectorize as v
 import AverageClassifier
 import KNNClassifier
 import ANNClassifier
