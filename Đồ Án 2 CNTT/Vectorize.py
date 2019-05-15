@@ -69,9 +69,9 @@ def MinVectorize(X_train, width):
     A = []
     for q in range(0,len(X_train)):
         ARR = []
-        for w in range(0,X_train.shape[1],28//width):
+        for w in range(0,28,28//width):
             Arr = []
-            for e in range(0,X_train.shape[2],28//width):
+            for e in range(0,28,28//width):
                 min = X_train[q][w][e]
                 for r in range(w,w+28//width):
                     for t in range(e,e+28//width):
