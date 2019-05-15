@@ -45,9 +45,10 @@ def MedianVectorize(X_train, width):
         for w in range(0,28,28//width):
             Arr = []
             for e in range(0,28,28//width):
+                u = []
                 for r in range(w,w+28//width):
                     for t in range(e,e+28//width):
-                        u = median(transarr(X_train[q][r][t]))
+                        u.append(X_train[q][r][t])
                 Arr.append(u)
             ARR.append(Arr)    
         A.append(ARR)  
@@ -62,10 +63,7 @@ def median(lst):
      return sortedLst[index] 
     else: 
      return (sortedLst[index] + sortedLst[index + 1])/2.0 
- 
-def transarr(arr):
-    """" Ham vecto hoa """
-    return arr.reshape(-1)
+
 
 def MinVectorize(X_train, width):
     A = []
