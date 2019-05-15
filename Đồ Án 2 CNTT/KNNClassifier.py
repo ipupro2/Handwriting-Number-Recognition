@@ -4,31 +4,31 @@ from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 import numpy as np
 
+def distance(X_train,data):
+    x=0;
+    for i in range(data.shape[0]):
+        x+=math.pow(X_train[i]-data[i],2)
+    return math.sqrt(x)  
+
+def findmax(A,k):
+    A=np.array(A)
+    A=A[A[:, 0].argsort()]
+    ARR = []
+    for i in range (k):
+        ARR.append(int(A[i][1]))      
+    ARR=np.array(ARR) 
+    return np.bincount(ARR).argmax()
+ 
+
 def Predict(X_train,y_train,data,k):
-    x=0
+
     A = []
     for i in range(len(X_train)):
         Arr = []
-        for j in range(196):
-            x += (X_train[i][j]-data[j])**2
-        x = math.sqrt(x)
-        Arr.append(x)
+        Arr.append(distance(X_train[i],data))
         Arr.append(y_train[i])
         A.append(Arr)
-        x=0  
-        
-    A=np.array(A)
-    A=A[A[:, 0].argsort()]
-    
-    ARR=np.zeros(10)
-    count = 0
-    for i in range(10):
-        for j in range(k):
-            if A[j][1] == i:
-                count+=1
-        ARR[i]=count
-        count = 0
-    return ARR.argmax()
+    return findmax(A,k)
 
 def Test(X_test, y_test, X_train, y_train):
     for i in range(0, 10):
