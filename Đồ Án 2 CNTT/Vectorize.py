@@ -3,112 +3,54 @@ import numpy as np
 def NormalVectorize(A):
     return A.reshape(len(A),-1)
 
-def MeanVectorize14(X_train):
+def MeanVectorize(X_train, width):
+    A = []
     u=0
     for q in range(0,len(X_train)):
-        for w in range(0,14):
-            w*=2
-            for e in range(0,14):
-                e*=2
-                for r in range(w,w+2):
-                    for t in range(e,e+2):
-                        u += X_train[q][r][t]
-                X_train[q][w][e]=u/4
+        ARR = []
+        for w in range(0,28,28//width):
+            Arr = []
+            for e in range(0,28,28//width):
+                for r in range(w,w+28//width):
+                    for t in range(e,e+28//width):
+                        u += X_train[q][r][t]/((28/width)**2)
+                Arr.append(u)
                 u=0
-    for q in range(0,len(X_train)):
-        for w in range(0,14):
-            for e in range(0,14):
-                X_train[q][w][e]=X_train[q][w*2][e*2]
-        
-    A=[]
-    for i in range(0,len(X_train)):
-        A.append([])
-        for j in range(0,14):
-            A[i].append([])
-            for k in range(0,14):
-                A[i][j].insert(k,X_train[i][j][k])
+            ARR.append(Arr)    
+        A.append(ARR)  
     return np.array(A)
 
-def MeanVectorize7(X_train):
-    u=0
+def MaxVectorize(X_train, width):
+    A = []
     for q in range(0,len(X_train)):
-        for w in range(0,7):
-            w*=4
-            for e in range(0,7):
-                e*=4
-                for r in range(w,w+4):
-                    for t in range(e,e+4):
-                        u += X_train[q][r][t]
-                X_train[q][w][e]=u/16
-                u=0
-    for q in range(0,len(X_train)):
-        for w in range(0,7):
-            for e in range(0,7):
-                X_train[q][w][e]=X_train[q][w*4][e*4]
-    
-    A=[]
-    for i in range(0,len(X_train)):
-        A.append([])
-        for j in range(0,7):
-            A[i].append([])
-            for k in range(0,7):
-                A[i][j].insert(k,X_train[i][j][k])
-                
-    return np.array(A)
-
-def MaxVectorize14(X_train):
-    for q in range(0,len(X_train)):
-        for w in range(0,14):
-            w*=2
-            for e in range(0,14):
-                e*=2
+        ARR = []
+        for w in range(0,28,28//width):
+            Arr = []
+            for e in range(0,28,28//width):
                 max = X_train[q][w][e]
-                for r in range(w,w+2):
-                    for t in range(e,e+2):
-                        if max < X_train[q][w][e]:
-                            max = X_train[q][w][e]
-                X_train[q][w][e]= max
-             
-    for q in range(0,len(X_train)):
-        for w in range(0,14):
-            for e in range(0,14):
-                X_train[q][w][e]=X_train[q][w*2][e*2]
-    
-    A=[]
-    for i in range(0,len(X_train)):
-        A.append([])
-        for j in range(0,14):
-            A[i].append([])
-            for k in range(0,14):
-                A[i][j].insert(k,X_train[i][j][k])
-                
-    return np.array(A)
-
-def MaxVectorize7(X_train):
-    for q in range(0,len(X_train)):
-        for w in range(0,7):
-            w*=4
-            for e in range(0,7):
-                e*=4
-                max = X_train[q][w][e]
-                for r in range(w,w+4):
-                    for t in range(e,e+4):
+                for r in range(w,w+28//width):
+                    for t in range(e,e+28//width):
                         if max < X_train[q][r][t]:
                             max = X_train[q][r][t]
-                X_train[q][w][e]= max
-    for q in range(0,len(X_train)):
-        for w in range(0,7):
-            for e in range(0,7):
-                X_train[q][w][e]=X_train[q][w*4][e*4]
+                Arr.append(max)
+            ARR.append(Arr)    
+        A.append(ARR)    
+    return np.array(A)
+
+def MedianVectorize(X_train, width):
     
-    A=[]
-    for i in range(0,len(X_train)):
-        A.append([])
-        for j in range(0,7):
-            A[i].append([])
-            for k in range(0,7):
-                A[i][j].insert(k,X_train[i][j][k])
-                
+    A = []
+    for q in range(0,len(X_train)):
+        ARR = []
+        for w in range(0,28,28//width):
+            Arr = []
+            for e in range(0,28,28//width):
+                for r in range(w,w+28//width):
+                    for t in range(e,e+28//width):
+                        u = median(transarr(X_train[q][r][t]))
+                Arr.append(u)
+            ARR.append(Arr)    
+        A.append(ARR)  
     return np.array(A)
 
 def median(lst): 
@@ -124,41 +66,20 @@ def median(lst):
 def transarr(arr):
     """" Ham vecto hoa """
     return arr.reshape(-1)
-    
-def MedianVectorize14(X_train):
-    for q in range(0,len(X_train)):
-        for w in range(0,14):
-            w*=2
-            for e in range(0,14):
-                e*=2
-                for r in range(w,w+2):
-                    for t in range(e,e+2):
-                        u = median(transarr(X_train[q][r][t]))
-                X_train[q][w][e]=median(transarr(u))
-    return X_train
 
-def MedianVectorize7(X_train):
+def MinVectorize(X_train, width):
+    A = []
     for q in range(0,len(X_train)):
-        for w in range(0,7):
-            w*=4
-            for e in range(0,7):
-                e*=4
-                for r in range(w,w+4):
-                    for t in range(e,e+4):
-                        u = median(transarr(X_train[q][r][t]))
-                X_train[q][w][e]=median(transarr(u))
-    
-    for q in range(0,len(X_train)):
-        for w in range(0,7):
-            for e in range(0,7):
-                X_train[q][w][e]=X_train[q][w*4][e*4]      
-    
-    A=[]
-    for i in range(0,len(X_train)):
-        A.append([])
-        for j in range(0,7):
-            A[i].append([])
-            for k in range(0,7):
-                A[i][j].insert(k,X_train[i][j][k])
-                
+        ARR = []
+        for w in range(0,X_train.shape[1],28//width):
+            Arr = []
+            for e in range(0,X_train.shape[2],28//width):
+                min = X_train[q][w][e]
+                for r in range(w,w+28//width):
+                    for t in range(e,e+28//width):
+                        if min > X_train[q][r][t]:
+                            min = X_train[q][r][t]
+                Arr.append(min)
+            ARR.append(Arr)    
+        A.append(ARR)    
     return np.array(A)
