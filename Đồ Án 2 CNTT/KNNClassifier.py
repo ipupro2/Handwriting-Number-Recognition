@@ -1,14 +1,8 @@
-import math
 import random
 from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 import numpy as np
 
-def distance(X_train,data):
-    x=0;
-    for i in range(data.shape[0]):
-        x+=math.pow(X_train[i]-data[i],2)
-    return math.sqrt(x)  
 
 def findmax(A,k):
     A=np.array(A)
@@ -16,16 +10,13 @@ def findmax(A,k):
     ARR = []
     for i in range (k):
         ARR.append(int(A[i][1]))      
-    ARR=np.array(ARR) 
-    return np.bincount(ARR).argmax()
- 
+    return np.bincount(np.array(ARR)).argmax()
 
 def Predict(X_train,y_train,data,k):
-
     A = []
     for i in range(len(X_train)):
         Arr = []
-        Arr.append(distance(X_train[i],data))
+        Arr.append(np.linalg.norm(data - X_train[i]))
         Arr.append(y_train[i])
         A.append(Arr)
     return findmax(A,k)
